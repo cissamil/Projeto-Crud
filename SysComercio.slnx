@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CamadaApresentacao/CamadaApresentacao.csproj" Id="895aceb8-4e3d-4f9e-9154-f91f0acbbed0" />
+  <Project Path="CamadaDados/CamadaDados.csproj" Id="39fea86e-e463-476a-a1a7-68daccbf4875" />
+  <Project Path="CamadaNegocio/CamadaNegocio.csproj" Id="29e50ea5-9d6e-417e-86a3-67289b839fee" />
+  <Project Path="SysComercio.csproj" />
+</Solution>
