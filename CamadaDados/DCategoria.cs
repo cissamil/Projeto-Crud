@@ -232,5 +232,10 @@ namespace CamadaDados
 
             return DtResultado;
         }
+
+        public DataTable Buscar(DCategoria obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

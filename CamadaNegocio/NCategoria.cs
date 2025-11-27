@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CamadaDados;
-using.System.Data;
+using System.Data;
 
 namespace CamadaNegocio
 {
