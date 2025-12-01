@@ -196,7 +196,7 @@ namespace CamadaDados
         }
 
         //Metodo BuscarNome
-        public DataTable BuscarNome(DCategoria categoria)
+        public DataTable Buscar(DCategoria categoria)
         {
             DataTable DtResultado = new DataTable("categoria");
             SqlConnection SqlCon = new SqlConnection();
@@ -231,11 +231,6 @@ namespace CamadaDados
             }
 
             return DtResultado;
-        }
-
-        public DataTable Buscar(DCategoria obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

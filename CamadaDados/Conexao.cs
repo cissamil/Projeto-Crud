@@ -6,6 +6,7 @@ namespace CamadaDados
 {
     internal class Conexao
     {
-        public static string Cn = "Data Source = MTZ770; Initial Catalog = dbcomercio; Integrated Security = true";
+        public static string Cn = "Server=MTZ770;Database=dbcomercio;Integrated Security=True;TrustServerCertificate=True";
+        //"Data Source = MTZ770; Initial Catalog = dbcomercio; Integrated Security = true"
     }
 }
