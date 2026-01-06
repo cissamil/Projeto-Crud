@@ -1,17 +1,17 @@
-# Crud de Categoria
+# Crud de Categoria feito em C#    
 
-AplicaÁ„o Windows Forms em camadas (.NET 10) para gerenciar categorias (listar, buscar, inserir, editar e excluir). Utiliza ADO.NET com procedures armazenadas para acesso a dados.
+Aplica√ß√£o Windows Forms em camadas (.NET 10) para gerenciar categorias (listar, buscar, inserir, editar e excluir). Utiliza ADO.NET com procedures armazenadas para acesso a dados.
 
-PrÈ-requisitos
+Pr√©-requisitos
 --------------
 - .NET 10 SDK instalado
 - Visual Studio 2026 (ou `dotnet` CLI)
-- SQL Server (ou compatÌvel) com as procedures e tabela necess·rias
-- Ajustar a string de conex„o em `CamadaDados.Conexao.Cn`
+- SQL Server (ou compat√≠vel) com as procedures e tabela necess√°rias
+- Ajustar a string de conex√£o em `CamadaDados.Conexao.Cn`
 
 Banco de dados
 --------------
-S„o esperadas as procedures (ajuste nomes conforme seu banco):
+S√£o esperadas as procedures (ajuste nomes conforme seu banco):
 - `SP_MOSTRAR_CATEGORIA`
 - `SP_INSERIR_CATEGORIA`
 - `SP_EDITAR_CATEGORIA`
@@ -30,15 +30,15 @@ END
 
 Como rodar
 ---------
-1. Atualize a string de conex„o em `CamadaDados.Conexao.Cn` apontando para o seu banco de dados.
+1. Atualize a string de conex√£o em `CamadaDados.Conexao.Cn` apontando para o seu banco de dados.
 2. Certifique-se de que a tabela `Categoria` e as procedures existam.
-3. No Visual Studio 2026: abra a soluÁ„o e execute o projeto de apresentaÁ„o (defina-o como startup).
+3. No Visual Studio 2026: abra a solu√ß√£o e execute o projeto de apresenta√ß√£o (defina-o como startup).
    Ou com o CLI:
    - Construir: `dotnet build`
    - Executar: `dotnet run --project ./CamadaApresentacao1/CamadaApresentacao1.csproj`
 
-ObservaÁıes
+Observa√ß√µes
 ----------
-- Evite suprimir exceÁıes em `DCategoria.Mostrar` para n„o mascarar falhas de acesso a dados.
-- Use `using` para conexıes/commands e registre erros para facilitar diagnÛstico.
-- Recomenda-se esconder colunas do `DataGridView` por nome (ou no evento `DataBindingComplete`) em vez de usar Ìndices fixos.
+- Evite suprimir exce√ß√µes em `DCategoria.Mostrar` para n√£o mascarar falhas de acesso a dados.
+- Use `using` para conex√µes/commands e registre erros para facilitar diagn√≥stico.
+- Recomenda-se esconder colunas do `DataGridView` por nome (ou no evento `DataBindingComplete`) em vez de usar √≠ndices fixos.
