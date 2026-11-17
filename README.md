@@ -1,44 +1,70 @@
-# Crud de Categoria feito em C#    
+# CRUD de Categorias em C# (Arquitetura em Camadas)
 
-Aplicação Windows Forms em camadas (.NET 10) para gerenciar categorias (listar, buscar, inserir, editar e excluir). Utiliza ADO.NET com procedures armazenadas para acesso a dados.
+Aplicação **Windows Forms (.NET 10)** que gerencia categorias de produtos de um sistema comercial (*SysComercio*): **listar, buscar, inserir, editar e excluir**. O acesso ao banco SQL Server é feito por **ADO.NET** com **stored procedures**.
 
-Pré-requisitos
---------------
-- .NET 10 SDK instalado
-- Visual Studio 2026 (ou `dotnet` CLI)
-- SQL Server (ou compatível) com as procedures e tabela necessárias
-- Ajustar a string de conexão em `CamadaDados.Conexao.Cn`
+> **CRUD** = *Create, Read, Update, Delete* (criar, ler, atualizar e excluir), as 4 operações básicas de qualquer cadastro.
 
-Banco de dados
---------------
-São esperadas as procedures (ajuste nomes conforme seu banco):
-- `SP_MOSTRAR_CATEGORIA`
-- `SP_INSERIR_CATEGORIA`
-- `SP_EDITAR_CATEGORIA`
-- `SP_DELETE_CATEGORIA`
-- `SP_BUSCAR_NOME`
+---
 
-Exemplo simples de procedure `SP_MOSTRAR_CATEGORIA` (ajuste conforme seu esquema):
+## 📍 Contexto
 
-```sql
-CREATE PROCEDURE SP_MOSTRAR_CATEGORIA
-AS
-BEGIN
-    SELECT Idcategoria, Nome, Descricao FROM Categoria;
-END
+Projeto de estudo desenvolvido durante minha formação em **Análise e Desenvolvimento de Sistemas**, para praticar como sistemas comerciais reais são organizados por dentro. O cadastro escolhido foi o de **categorias**, base para cadastros maiores como produtos e clientes.
+
+## ❗ Problema
+
+Em projetos iniciantes é comum colocar **tudo dentro da tela**: o botão "Salvar" abre a conexão, monta o SQL e mostra a mensagem, tudo no mesmo lugar. Isso causa três problemas:
+
+- **Difícil de manter:** mudar o banco obriga a mexer em todas as telas.
+- **Código repetido:** a mesma lógica aparece em vários formulários.
+- **Risco de segurança:** SQL montado concatenando texto abre espaço para *SQL Injection* (injeção de comandos maliciosos pelo campo de texto).
+
+## 🛠️ Solução (o que e como fiz)
+
+Dividi o sistema em **3 camadas**, cada uma com uma única responsabilidade:
+
+```
+[ Tela ]  ──▶  [ Negócio ]  ──▶  [ Dados ]  ──▶  SQL Server
+frmCategoria    NCategoria       DCategoria      Stored Procedures
 ```
 
-Como rodar
----------
-1. Atualize a string de conexão em `CamadaDados.Conexao.Cn` apontando para o seu banco de dados.
-2. Certifique-se de que a tabela `Categoria` e as procedures existam.
-3. No Visual Studio 2026: abra a solução e execute o projeto de apresentação (defina-o como startup).
-   Ou com o CLI:
-   - Construir: `dotnet build`
-   - Executar: `dotnet run --project ./CamadaApresentacao1/CamadaApresentacao1.csproj`
+| Camada | Classe | Responsabilidade |
+|---|---|---|
+| **Apresentação** | `frmCategoria` | Mostra a tela e recebe o que o usuário digita |
+| **Negócio** | `NCategoria` | Recebe o pedido da tela e repassa para os dados (é onde ficam as regras) |
+| **Dados** | `DCategoria` + `Conexao` | Conecta no banco e executa as procedures |
 
-Observações
-----------
-- Evite suprimir exceções em `DCategoria.Mostrar` para não mascarar falhas de acesso a dados.
-- Use `using` para conexões/commands e registre erros para facilitar diagnóstico.
-- Recomenda-se esconder colunas do `DataGridView` por nome (ou no evento `DataBindingComplete`) em vez de usar índices fixos.
+**Analogia:** é como um restaurante. O **garçom** (tela) anota o pedido, o **gerente** (negócio) confere se está tudo certo e a **cozinha** (dados) prepara. O cliente nunca entra na cozinha.
+
+**Exemplo do fluxo ao inserir uma categoria:**
+
+```csharp
+// Tela chama o Negócio
+NCategoria.Inserir("Bebidas", "Refrigerantes e sucos");
+
+// Negócio monta o objeto e chama os Dados
+obj.Inserir(obj);
+
+// Dados executa a procedure com parâmetros (sem concatenar texto)
+SqlCmd.CommandText = "SP_INSERIR_CATEGORIA";
+SqlCmd.Parameters.Add(ParNome);
+```
+
+**Ferramentas:** C#, .NET 10, Windows Forms, ADO.NET (`Microsoft.Data.SqlClient`), SQL Server e stored procedures.
+
+## 📊 Resultado (Antes × Depois)
+
+| Antes (tudo na tela) | Depois (em camadas) |
+|---|---|
+| SQL espalhado pelos formulários | Todo acesso ao banco concentrado em `DCategoria` |
+| Mudar o banco = mexer em todas as telas | Mudar o banco = mexer só na camada de dados |
+| SQL concatenado, vulnerável a *SQL Injection* | Stored procedures com parâmetros tipados |
+| Lógica repetida | Cada operação escrita uma única vez e reaproveitada |
+
+---
+
+## ▶️ Como rodar
+
+1. Crie no SQL Server o banco `dbcomercio` com a tabela `Categoria` e as procedures:
+   `SP_MOSTRAR_CATEGORIA`, `SP_INSERIR_CATEGORIA`, `SP_EDITAR_CATEGORIA`, `SP_DELETE_CATEGORIA` e `SP_BUSCAR_NOME`.
+2. Ajuste a string de conexão em `CamadaDados/Conexao.cs`.
+3. Abra a solução no Visual Studio e execute o projeto.
